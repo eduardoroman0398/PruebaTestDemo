@@ -1,0 +1,139 @@
+[
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CATEGORIES.JSON - Clasificación de Errores en Allure
+  // ═══════════════════════════════════════════════════════════════════════════
+  //
+  // PROPÓSITO: Categorizar automáticamente los fallos de tests
+  //
+  // UBICACIÓN: Este archivo debe estar en la carpeta "allure-results"
+  // RUTA: allure-results/categories.json
+  //
+  // ¿QUÉ HACE?
+  // - Analiza el error/excepción que causó el fallo del test
+  // - Lo clasifica en una categoría predefinida
+  // - Agrupa fallos similares en el reporte
+  //
+  // VENTAJAS:
+  // - Identifica rápidamente tipos de problemas comunes
+  // - Facilita el triaje de fallos
+  // - Mejora la comunicación con el equipo
+  //
+  // CAMPOS:
+  // - name: Nombre de la categoría (aparece en el reporte)
+  // - matchedStatuses: Qué estados de test aplican (failed, broken, passed, skipped)
+  // - messageRegex: Expresión regular para detectar el error en el mensaje
+  //
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  {
+    // CATEGORÍA 1: Problemas de Producto/Negocio
+    // Cuando las assertions fallan porque el comportamiento es incorrecto
+    "name": "Product defects",
+    "matchedStatuses": ["failed"],
+    
+    // Detecta errores de assertion típicos:
+    // - AssertionException (NUnit)
+    // - "Expected... but was..." (assertions que fallan)
+    "messageRegex": ".*AssertionException.*|.*Expected.*but was.*"
+  },
+  {
+    // CATEGORÍA 2: Problemas de Test (Automation Bugs)
+    // Cuando el código del test tiene errores, no la aplicación
+    "name": "Test defects",
+    "matchedStatuses": ["broken"],
+    
+    // Detecta errores comunes de automation:
+    // - NullReferenceException: Variable null no manejada
+    // - WebDriverException: Problemas con el driver
+    // - TimeoutException: Elemento no encontrado en tiempo esperado
+    "messageRegex": ".*NullReferenceException.*|.*WebDriverException.*|.*TimeoutException.*"
+  },
+  {
+    // CATEGORÍA 3: Problemas de Localizadores
+    // Cuando los selectores no encuentran elementos
+    "name": "Locator issues",
+    "matchedStatuses": ["broken"],
+    
+    // Detecta errores específicos de localización:
+    // - NoSuchElementException: Elemento no existe en DOM
+    // - StaleElementReferenceException: Elemento ya no es válido
+    // - ElementNotInteractableException: Elemento no se puede interactuar
+    "messageRegex": ".*NoSuchElementException.*|.*StaleElementReferenceException.*|.*ElementNotInteractableException.*"
+  },
+  {
+    // CATEGORÍA 4: Problemas de Timing/Sincronización
+    // Cuando los waits no son suficientes
+    "name": "Timing issues",
+    "matchedStatuses": ["broken"],
+    
+    // Detecta errores de timing:
+    // - WebDriverTimeoutException: Wait expiró
+    // - ElementClickInterceptedException: Elemento bloqueado por otro
+    "messageRegex": ".*WebDriverTimeoutException.*|.*ElementClickInterceptedException.*"
+  },
+  {
+    // CATEGORÍA 5: Problemas de Red/Ambiente
+    // Cuando hay problemas de conectividad o ambiente
+    "name": "Network or Environment issues",
+    "matchedStatuses": ["broken"],
+    
+    // Detecta errores de ambiente:
+    // - Connection refused: Servidor no disponible
+    // - 404, 500, 503: Errores HTTP
+    // - Network error: Problemas de red
+    "messageRegex": ".*Connection refused.*|.*(404|500|503).*|.*Network error.*"
+  },
+  {
+    // CATEGORÍA 6: Problemas de Login/Autenticación
+    // Cuando fallan tests de login específicamente
+    "name": "Authentication failures",
+    "matchedStatuses": ["failed", "broken"],
+    
+    // Detecta problemas de autenticación:
+    // - "login" en el mensaje de error
+    // - "authentication" o "credentials"
+    "messageRegex": ".*login.*|.*authentication.*|.*credentials.*"
+  },
+  {
+    // CATEGORÍA 7: Otros fallos sin categoría
+    // Catch-all para errores que no coinciden con otras categorías
+    "name": "Other",
+    "matchedStatuses": ["failed", "broken"]
+    // Sin messageRegex = captura todo lo no categorizado
+  }
+]
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CÓMO USAR EN TU PROYECTO
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// 1. UBICACIÓN:
+//    Guardar como: allure-results/categories.json
+//
+// 2. EJECUCIÓN:
+//    - Ejecuta tus tests normalmente
+//    - Allure leerá este archivo automáticamente
+//    - Los fallos se categorizarán según los regex definidos
+//
+// 3. VISUALIZACIÓN:
+//    - En el reporte Allure, ve a la sección "Categories"
+//    - Verás los tests agrupados por categoría
+//    - Facilita identificar patrones de fallos
+//
+// 4. PERSONALIZACIÓN:
+//    - Agrega más categorías según tus necesidades
+//    - Ajusta los messageRegex a tus mensajes de error específicos
+//    - Usa messageRegex más específicos para mejor precisión
+//
+// ═══════════════════════════════════════════════════════════════════════════
+// EJEMPLO DE MESSAGEREGEX PERSONALIZADO PARA TU PROYECTO
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Para detectar específicamente tu validación de "Mis solicitudes":
+// {
+//   "name": "Login validation failures",
+//   "matchedStatuses": ["failed"],
+//   "messageRegex": ".*Mis solicitudes.*|.*El login debería.*"
+// }
+//
+// ═══════════════════════════════════════════════════════════════════════════

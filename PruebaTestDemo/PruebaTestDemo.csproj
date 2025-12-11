@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Drivers\" />
+    <Folder Include="Screenshots\" />
   </ItemGroup>
 
   <ItemGroup>

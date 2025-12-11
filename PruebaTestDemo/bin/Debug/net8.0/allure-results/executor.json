@@ -1,0 +1,154 @@
+{
+  // ═══════════════════════════════════════════════════════════════════════════
+  // EXECUTOR.JSON - Información del Ejecutor
+  // ═══════════════════════════════════════════════════════════════════════════
+  //
+  // PROPÓSITO: Registrar información sobre QUIÉN/QUÉ ejecutó los tests
+  //
+  // UBICACIÓN: Este archivo debe estar en la carpeta "allure-results"
+  // RUTA: allure-results/executor.json
+  //
+  // ¿QUÉ HACE?
+  // - Muestra información del ambiente de ejecución
+  // - Identifica si fue CI/CD, manual, o local
+  // - Permite rastrear el origen de cada ejecución
+  //
+  // CASOS DE USO:
+  // - CI/CD: Jenkins, Azure DevOps, GitHub Actions
+  // - Ejecución local por desarrolladores/QA
+  // - Ejecución en ambientes específicos (UAT, PROD)
+  //
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // NAME: Nombre del servidor/ambiente que ejecutó los tests
+  // EJEMPLOS:
+  // - "Jenkins CI Server"
+  // - "Azure DevOps Pipeline"
+  // - "Eduardo's Local Machine"
+  // - "GitHub Actions Runner"
+  "name": "Local Development Environment",
+
+  // TYPE: Tipo de ejecutor
+  // OPCIONES COMUNES:
+  // - "jenkins" → Para Jenkins
+  // - "teamcity" → Para TeamCity
+  // - "bamboo" → Para Bamboo
+  // - "azure-devops" → Para Azure DevOps
+  // - "github-actions" → Para GitHub Actions
+  // - "local" → Para ejecuciones locales
+  "type": "local",
+
+  // URL: URL del job/pipeline en el servidor CI
+  // EJEMPLOS:
+  // - Jenkins: "https://jenkins.company.com/job/ui-tests/42/"
+  // - Azure DevOps: "https://dev.azure.com/org/project/_build/results?buildId=123"
+  // - GitHub Actions: "https://github.com/user/repo/actions/runs/1234567"
+  // - Local: null o tu máquina
+  "url": "http://localhost:61067",
+
+  // BUILD ORDER: Número secuencial del build
+  // IMPORTANTE: Debe ser único e incremental
+  // Allure usa esto para ordenar ejecuciones en TREND
+  "buildOrder": 1,
+
+  // BUILD NAME: Nombre/identificador del build
+  // EJEMPLOS:
+  // - "Build #42"
+  // - "Release 1.2.3"
+  // - "Nightly Run 2024-12-11"
+  // - "PR #123 Validation"
+  "buildName": "Local Test Run - 2024-12-11",
+
+  // BUILD URL: URL específica de este build (similar a url pero más específico)
+  "buildUrl": "http://localhost:61067/#",
+
+  // REPORT NAME: Nombre del reporte (opcional)
+  "reportName": "Login Tests - UAT Environment",
+
+  // REPORT URL: URL del reporte Allure (opcional)
+  "reportUrl": "http://localhost:61067/#"
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// CÓMO USAR EN TU PROYECTO
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// OPCIÓN 1: ARCHIVO ESTÁTICO (Para desarrollo local)
+// 1. Guarda este archivo como: allure-results/executor.json
+// 2. Actualiza manualmente los valores cuando sea necesario
+//
+// OPCIÓN 2: GENERACIÓN DINÁMICA (Recomendado para CI/CD)
+// Crea un script que genere este archivo antes de ejecutar tests:
+//
+// PowerShell:
+// @"
+// {
+//   "name": "$env:BUILD_DEFINITIONNAME",
+//   "type": "azure-devops",
+//   "buildOrder": $env:BUILD_BUILDID,
+//   "buildName": "Build #$env:BUILD_BUILDNUMBER",
+//   "buildUrl": "$env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI$env:SYSTEM_TEAMPROJECT/_build/results?buildId=$env:BUILD_BUILDID"
+// }
+// "@ | Out-File -FilePath "allure-results/executor.json"
+//
+// Bash (para GitHub Actions):
+// cat > allure-results/executor.json << EOF
+// {
+//   "name": "GitHub Actions",
+//   "type": "github-actions",
+//   "buildOrder": ${GITHUB_RUN_NUMBER},
+//   "buildName": "Run #${GITHUB_RUN_NUMBER}",
+//   "buildUrl": "https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+// }
+// EOF
+//
+// ═══════════════════════════════════════════════════════════════════════════
+// EJEMPLOS PARA DIFERENTES CI/CD
+// ═══════════════════════════════════════════════════════════════════════════
+
+// JENKINS:
+// {
+//   "name": "Jenkins CI",
+//   "type": "jenkins",
+//   "url": "https://jenkins.company.com",
+//   "buildOrder": 42,
+//   "buildName": "ui-tests #42",
+//   "buildUrl": "https://jenkins.company.com/job/ui-tests/42/"
+// }
+
+// AZURE DEVOPS:
+// {
+//   "name": "Azure DevOps Pipeline",
+//   "type": "azure-devops",
+//   "buildOrder": 123,
+//   "buildName": "Build #20241211.1",
+//   "buildUrl": "https://dev.azure.com/myorg/myproject/_build/results?buildId=123"
+// }
+
+// GITHUB ACTIONS:
+// {
+//   "name": "GitHub Actions",
+//   "type": "github-actions",
+//   "buildOrder": 456,
+//   "buildName": "Run #456",
+//   "buildUrl": "https://github.com/user/repo/actions/runs/456"
+// }
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PUNTOS CLAVE PARA CAPACITACIÓN
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// 1. buildOrder es CRÍTICO para TREND:
+//    - Debe ser incremental y único
+//    - Allure usa esto para ordenar ejecuciones históricas
+//    - En CI/CD usa el número de build del pipeline
+//
+// 2. name y type ayudan a identificar el origen:
+//    - Útil cuando tienes múltiples pipelines
+//    - Facilita debugging (¿falló en CI o local?)
+//
+// 3. URLs permiten navegación rápida:
+//    - Click directo al job en Jenkins/Azure
+//    - Facilita revisión de logs del pipeline
+//
+// ═══════════════════════════════════════════════════════════════════════════

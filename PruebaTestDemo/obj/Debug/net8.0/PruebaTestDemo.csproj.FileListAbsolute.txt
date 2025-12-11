@@ -196,3 +196,4 @@ C:\Users\eromans\source\repos\PruebaTestDemo\PruebaTestDemo\bin\Debug\net8.0\Sys
 C:\Users\eromans\source\repos\PruebaTestDemo\PruebaTestDemo\bin\Debug\net8.0\System.Text.Encodings.Web.dll
 C:\Users\eromans\source\repos\PruebaTestDemo\PruebaTestDemo\bin\Debug\net8.0\System.Text.Json.dll
 C:\Users\eromans\source\repos\PruebaTestDemo\PruebaTestDemo\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
+C:\Users\eromans\source\repos\PruebaTestDemo\PruebaTestDemo\obj\Debug\net8.0\PruebaTestDemo.sourcelink.json

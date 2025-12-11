@@ -119,7 +119,7 @@ namespace PruebaTestDemo.Features
         
         [global::NUnit.Framework.TestAttribute()]
         [global::NUnit.Framework.DescriptionAttribute("Login exitoso")]
-        [global::NUnit.Framework.TestCaseAttribute("albop_can1@yopmail.com", "12345678", "0", null)]
+        [global::NUnit.Framework.TestCaseAttribute("albop_can1@yopmail.com", "123456789", "0", null)]
         public async global::System.Threading.Tasks.Task LoginExitoso(string user, string password, string @__pickleIndex, string[] exampleTags)
         {
             string[] tagsOfScenario = exampleTags;

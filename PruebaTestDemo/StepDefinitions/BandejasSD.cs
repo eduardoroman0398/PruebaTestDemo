@@ -33,49 +33,9 @@ namespace PruebaTestDemo.StepDefinitions
         [Then("Valido que el login sea exitoso")]
         public void ThenVerificoQueElLoginSeaExitoso()
         {
-            try
-            {
-                // Obtiene el texto del elemento "Mis solicitudes"
-                // Si el elemento no aparece en 10 seg, lanza WebDriverTimeoutException
-                var titulo = bandejasPage.obtenerTituloDeLaPagina();
-                // ASSERTION CON NUNIT:
-                // Assert.That: Sintaxis moderna de NUnit (constraint-based)
-                // 
-                // PARÁMETROS:
-                // 1. Valor actual: titulo (lo que obtuvimos de la UI)
-                // 2. Constraint: Is.EqualTo("Mis solicitudes") (lo que esperamos)
-                // 3. Mensaje: Se muestra si el assertion falla
-                // 
-                // COMPORTAMIENTO:
-                // ✅ Si titulo == "Mis solicitudes" → Test pasa, continúa
-                // ❌ Si titulo != "Mis solicitudes" → Test falla con el mensaje
-                Assert.That(titulo, Is.EqualTo("Mis solicitudes"),
-                    $"Se esperaba 'Mis solicitudes' pero se obtuvo '{titulo}'");
-
-                Console.WriteLine("✓ Login exitoso - Se encontró el elemento 'Mis solicitudes'");
-            }
-            catch (WebDriverTimeoutException)
-            {
-                Assert.Fail("El login debería ser exitoso pero NO se encontró el elemento 'Mis solicitudes'");
-            }
+            bandejasPage.validarLoginExitoso();
         }
 
-        [Then("Valido que el login sea fallido")]
-        public void ThenValidoQueElLoginSeaFallido()
-        {
-            try
-            {
-                var titulo = bandejasPage.obtenerTituloDeLaPagina();
-
-                // Si llegamos aquí, significa que SÍ encontró "Mis solicitudes" (no debería)
-                Assert.Fail($"El login debería fallar pero se encontró '{titulo}' - El usuario accedió al sistema");
-            }
-            catch (WebDriverTimeoutException)
-            {
-                // ✅ Esto es lo esperado: NO encontró el elemento porque el login falló
-                Console.WriteLine("✓ Login fallido correctamente - NO se encontró el elemento 'Mis solicitudes'");
-                Assert.Pass("Login falló correctamente, el usuario no pudo acceder");
-            }
-        }
+       
     }
 }

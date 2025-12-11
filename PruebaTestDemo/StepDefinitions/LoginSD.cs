@@ -50,5 +50,14 @@ namespace PruebaTestDemo.StepDefinitions
             _login.ClickLoginButton();
             Console.WriteLine("Clic en el boton de iniciar sesion.");
         }
+
+        [Then("Valido que el login sea fallido")]
+        public void ThenValidoQueElLoginSeaFallido()
+        {
+            Assert.That(_login.LoginFallidoVisible(),
+                "No se motro el mensaje de error al intentar loguearse.");
+
+        }
+
     }
 }

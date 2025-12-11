@@ -10,36 +10,19 @@ using System.Threading.Tasks;
 
 namespace PruebaTestDemo.PageObjects
 {
-    /// <summary>
-    /// ═══════════════════════════════════════════════════════════════════════════
-    /// PAGE OBJECT MODEL (POM) - LoginPage
-    /// ═══════════════════════════════════════════════════════════════════════════
-    /// 
-    /// CONCEPTO FUNDAMENTAL: Page Object Model es un patrón de diseño donde:
-    /// - Cada PÁGINA WEB se representa como una CLASE
-    /// - Los ELEMENTOS de la página son propiedades privadas
-    /// - Las ACCIONES sobre la página son métodos públicos
-    /// 
-    /// HERENCIA: LoginPage hereda de Util para acceder a métodos comunes
-    /// como WaitForClickable, WaitForVisible, TakeScreenshot, etc.
+   
     public class LoginPage : Util
     {
-        /// <summary>
-        /// Driver: Instancia del navegador que se usa para todas las interacciones.
-        /// readonly: Solo se puede asignar en el constructor (inmutable después)
-        /// </summary>
+       
         private readonly IWebDriver Driver;
-        /// <summary>
-        /// LoginUrl: URL del ambiente de prueba.
-        /// MEJORA SUGERIDA: Debería venir de un archivo de configuración (appsettings.json)
-        /// para poder cambiar fácilmente entre ambientes (DEV, UAT, PROD)
-        /// </summary>
+       
         private string LoginUrl;
 
         /// readonly: Los localizadores no cambian en tiempo de ejecución
         private readonly By _emailInput = By.Id("username");
         private readonly By _passwordInput = By.CssSelector(".p-password-input");
         private readonly By _loginButton = By.CssSelector(".boton-sing-in");
+        private readonly By _toastError = By.XPath("//div[contains(@class,'p-toast-message-content')]");
 
         /// Constructor: Recibe el WebDriver a través de inyección de dependencias.
         public LoginPage(IWebDriver driver)
@@ -65,12 +48,31 @@ namespace PruebaTestDemo.PageObjects
             WaitForClickable(Driver, _emailInput).SendKeys(user);
             // Espera que el campo password sea clickeable, luego escribe la contraseña
             WaitForClickable(Driver, _passwordInput).SendKeys(pass);
+            TakeScreenshot(Driver, "Credenciales ingresadas");
         }
 
         public void ClickLoginButton()
         {
             // Espera explícita + click en una sola línea
             WaitForClickable(Driver, _loginButton).Click();
+        }
+
+        public bool LoginFallidoVisible()
+        {
+            try
+            {
+                var element = WaitForVisible(Driver, _toastError);
+                if (element.Displayed)
+                {
+                    TakeScreenshot(Driver, "Login Fallido");
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
         }
 
     }
